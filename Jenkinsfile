@@ -26,6 +26,7 @@ pipeline {
                     }
                 }
             }
+        }
        stage('Deploy to App Host') {
             steps {
                 script {
@@ -41,4 +42,3 @@ pipeline {
  }
 }
 }
-
