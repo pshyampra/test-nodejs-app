@@ -16,7 +16,6 @@ pipeline {
                     def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com"
                     def awsRegion = "ap-south-1"
                     def ecrLogin = sh(script: "aws ecr get-login-password --region ${awsRegion} | /usr/bin/docker login --username AWS --password-stdin ${ecrRepoUrl}",returnStatus: true)
-
                     if (ecrLogin == 0) {
                         sh "docker build -t app ."
                         sh "docker tag app:latest ${ecrRepoUrl}/app:latest"
@@ -30,7 +29,9 @@ pipeline {
        stage('Deploy to App Host') {
             steps {
                 script {
-
+                        def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com"
+                        def awsRegion = "ap-south-1"
+                        def ecrLogin = sh(script: "aws ecr get-login-password --region ${awsRegion} | /usr/bin/docker login --username AWS --password-stdin ${ecrRepoUrl}",returnStatus: true)
                         sh "docker pull ${ecrRepoUrl}/app:latest"
                         sh "docker stop my-node-app-container || true"
                         sh "docker rm my-node-app-container || true"
