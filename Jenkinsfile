@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Step 2: Build Docker image and publish to ECR
-                    def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com"
+                    def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com/app"
                     def awsRegion = "ap-south-1"
                     def ecrLogin = sh(script: "aws ecr get-login-password --region ${awsRegion} | /usr/bin/docker login --username AWS --password-stdin ${ecrRepoUrl}",returnStatus: true)
 
@@ -26,6 +26,19 @@ pipeline {
                     }
                 }
             }
-        }
+       stage('Deploy to App Host') {
+            steps {
+                script {
+
+                        sh "docker pull ${ecrRepoUrl}/app:latest"
+                        sh "docker stop my-node-app-container || true"
+                        sh "docker rm my-node-app-container || true"
+                        sh "docker run -d --name my-node-app-container -p 8080:8081 ${ecrRepoUrl}/app:latest"
+
+                    }
+                }
     }
+ }
 }
+}
+
