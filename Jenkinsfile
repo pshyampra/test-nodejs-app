@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Step 2: Build Docker image and publish to ECR
-                    def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com/app"
+                    def ecrRepoUrl = "485517222763.dkr.ecr.ap-south-1.amazonaws.com"
                     def awsRegion = "ap-south-1"
                     def ecrLogin = sh(script: "aws ecr get-login-password --region ${awsRegion} | /usr/bin/docker login --username AWS --password-stdin ${ecrRepoUrl}",returnStatus: true)
 
