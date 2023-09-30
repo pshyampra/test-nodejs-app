@@ -19,7 +19,7 @@ pipeline {
 
                     if (ecrLogin == 0) {
                         sh "docker build -t app ."
-                        sh "docker push ${ecrRepoUrl}/shyamp:app"
+                        sh "docker push ${ecrRepoUrl}/shyamp/app"
                     } else {
                         error "Failed to authenticate with ECR"
                     }
